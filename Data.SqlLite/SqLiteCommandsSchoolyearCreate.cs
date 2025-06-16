@@ -9,8 +9,7 @@ namespace HqNotenverwaltung.Data.SqlLite
             var cmd = connection.CreateCommand();
             cmd.CommandText =
                 @"CREATE TABLE IF NOT EXISTS Schoolyear (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT
-                   ,Startyear INTEGER NOT NULL
+                    Startyear INTEGER INTEGER PRIMARY KEY
                    ,Semestered Integer NOT NULL
                 );";
 
@@ -21,10 +20,11 @@ namespace HqNotenverwaltung.Data.SqlLite
             var cmd = connection.CreateCommand();
             cmd.CommandText =
                 @"CREATE TABLE IF NOT EXISTS DaysStart (
-                    Day DATE PRIMARY KEY
-                   ,SchoolyearId INTEGER NOT NULL
+                    Id INTEGER PRIMARY KEY
+                   ,Schoolyear INTEGER NOT NULL
+                   ,Day DATE 
                    ,Remark TEXT
-                   ,FOREIGN KEY (SchoolyearId) REFERENCES Schoolyear(Id)
+                   ,FOREIGN KEY (Schoolyear) REFERENCES Schoolyear(Startyear)
                 );";
 
             return cmd;
@@ -34,10 +34,11 @@ namespace HqNotenverwaltung.Data.SqlLite
             var cmd = connection.CreateCommand();
             cmd.CommandText =
                 @"CREATE TABLE IF NOT EXISTS DaysEnd (
-                    Day DATE PRIMARY KEY
-                   ,SchoolyearId INTEGER NOT NULL
+                    Id INTEGER PRIMARY KEY
+                   ,Day DATE 
+                   ,Schoolyear INTEGER NOT NULL
                    ,Remark TEXT
-                   ,FOREIGN KEY (SchoolyearId) REFERENCES Schoolyear(Id)
+                   ,FOREIGN KEY (Schoolyear) REFERENCES Schoolyear(Startyear)
                 );";
 
             return cmd;
@@ -48,10 +49,11 @@ namespace HqNotenverwaltung.Data.SqlLite
             var cmd = connection.CreateCommand();
             cmd.CommandText =
                 @"CREATE TABLE IF NOT EXISTS DaysFree (
-                    Day DATE PRIMARY KEY
-                   ,SchoolyearId INTEGER NOT NULL
-                   ,Cause TEXT
-                   ,FOREIGN KEY (SchoolyearId) REFERENCES Schoolyear(Id)
+                    Id INTEGER PRIMARY KEY
+                   ,Day DATE 
+                   ,Schoolyear INTEGER NOT NULL
+                   ,Remark TEXT
+                   ,FOREIGN KEY (Schoolyear) REFERENCES Schoolyear(Startyear)
                 );";
 
             return cmd;

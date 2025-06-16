@@ -1,5 +1,6 @@
 ﻿using HqNotenverwaltung.Contracts;
 using HqNotenverwaltung.Data.SqlLite;
+using HqNotenverwaltung.ViewModel;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -25,16 +26,10 @@ namespace HqNotenverwaltung
 
             schoolyear.ConnectAsync("Daten", "Schuljahr");
 
-            var schuljahre = schoolyear.Schoolyears;
-
-            foreach (var y in schuljahre) {
-                Debug.WriteLine(y);
-
-            }
-
             InitializeComponent();
-
-
+            VmSchoolYear vmSchoolYear = new(schoolyear);
+            DataContext = vmSchoolYear;
+            // https://stackoverflow.com/questions/561166/binding-a-wpf-combobox-to-a-custom-list
 
         }
     }

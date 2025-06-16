@@ -44,25 +44,19 @@ namespace HqNotenverwaltung.Data.SqlLite
         public async Task Seed()
         {
             using var connection = await _dbManager.GetOpenConnectionAsync();
-            var create = new SqLiteCommandsSchoolyearSeed();
-            var cmd = create.SeedTableSchoolyear(connection);
+            var create = new SqLiteCommandsSchoolyearQuery();
+            var cmd = create.UpsertSchoolyear(connection, 25, 0);
             await cmd.ExecuteNonQueryAsync();
-            cmd = create.GetSchoolyearId(connection);
-            using var reader = await cmd.ExecuteReaderAsync();
-            await reader.ReadAsync();
-            var schoolyearId = reader.GetInt32(0);
-            cmd = create.SeedTableDaysStart(connection, schoolyearId, new DateOnly(2025,09,01), "Schulstart");
+            cmd = create.UpsertDay(connection, 1, "DaysStart", 25, new DateOnly(2025, 09, 01), "Schulstart");
             await cmd.ExecuteNonQueryAsync();
-            cmd = create.SeedTableDaysStart(connection, schoolyearId, new DateOnly(2025, 11, 01), "Schulstart 4AFME");
+            cmd = create.UpsertDay(connection, 2, "DaysStart", 25, new DateOnly(2025, 11, 01), "Schulstart 4AFME");
             await cmd.ExecuteNonQueryAsync();
-            cmd = create.SeedTableDaysEnd(connection, schoolyearId, new DateOnly(2026, 02, 02), "Semster");
+            cmd = create.UpsertDay(connection, 1, "DaysEnd", 25, new DateOnly(2026, 02, 02), "Semster");
             await cmd.ExecuteNonQueryAsync();
-            cmd = create.SeedTableDaysEnd(connection, schoolyearId, new DateOnly(2026, 05, 20), "Ende Maturaklassen");
+            cmd = create.UpsertDay(connection, 2, "DaysEnd", 25, new DateOnly(2026, 05, 20), "Ende Maturaklassen");
             await cmd.ExecuteNonQueryAsync();
-            cmd = create.SeedTableDaysEnd(connection, schoolyearId, new DateOnly(2026, 07, 03), "Ende Schuljahr");
+            cmd = create.UpsertDay(connection, 3, "DaysEnd", 25, new DateOnly(2026, 07, 03), "Ende Schuljahr");
             await cmd.ExecuteNonQueryAsync();
-
         }
-
     }
 }

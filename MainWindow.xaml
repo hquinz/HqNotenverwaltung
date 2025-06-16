@@ -5,8 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HqNotenverwaltung"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Notenverwaltung" Height="450" Width="800"
+        Background="SlateGray"
+        FontSize="22">
     <Grid>
+        <TabControl>
+            <TabItem Header="Schuljahr">
+                <Grid Background="#252526">
+                    <Label Content="Schuljahr" 
+                           Foreground="AntiqueWhite" 
+                           Margin="10,10,0,0" Width="110" Height="40"
+                           HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <ComboBox Background="AntiqueWhite" Foreground="Black"
+                              Margin="120,12,0,0" Width="110" Height="36"
+                              HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                              ItemsSource="{Binding Path=Years}"
+                              SelectedValue="{Binding Path=SelectedYear}" RenderTransformOrigin="0.481,-0.347"/>
+                    <Button Content="Neu" 
+                            Margin="10,55,0,0" Width="110" Height="36"
+                            HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+                    <Button Content="Bearbeiten" 
+                            Margin="120,55,0,0" Width="110" Height="36"
+                            HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+
+                </Grid>
+
+            </TabItem>
+            <TabItem Header="SoontoCome">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+
 
     </Grid>
 </Window>

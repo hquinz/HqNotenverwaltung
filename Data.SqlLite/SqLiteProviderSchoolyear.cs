@@ -1,6 +1,7 @@
 ﻿using HqNotenverwaltung.Contracts;
 using HqNotenverwaltung.Model;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 
 namespace HqNotenverwaltung.Data.SqlLite
@@ -14,7 +15,7 @@ namespace HqNotenverwaltung.Data.SqlLite
         {
             get
             {
-                getSchoolYears();
+                GetSchoolYears();
                 return _schoolyears;
             }
         }
@@ -40,7 +41,7 @@ namespace HqNotenverwaltung.Data.SqlLite
         public void Connect(string server, string database)
         {
             Server = server;
-            Database = database;
+            Database = database + ".sqlite";
             dbManager.ConectionsStringUpdate(Server, Database);
             schoolyearRepo.CreateTable();
         }
@@ -48,13 +49,21 @@ namespace HqNotenverwaltung.Data.SqlLite
         public async Task ConnectAsync(string server, string database)
         {
             Server = server;
-            Database = database;
-            dbManager.ConectionsStringUpdate(Server,Database);
+            Database = database + ".sqlite";
+            dbManager.ConectionsStringUpdate(Server, Database);
             await schoolyearRepo.CreateTableAsync();
-//            await schoolyearRepo.Seed();  
+            // TODO: löschen
+            //Debug.AutoFlush = true;
+            //await schoolyearRepo.Seed();  
         }
-
-        private void getSchoolYears()
+        public async Task UpsertSchoolyearAsync(int schoolyear, int semestered)
+        {
+            using var connection = dbManager.GetOpenConnection();
+            var create = new SqLiteCommandsSchoolyearQuery();
+            var cmd = create.UpsertSchoolyear(connection, schoolyear, semestered);
+            await cmd.ExecuteNonQueryAsync();
+        }
+        private void GetSchoolYears()
         {
             using var connection = dbManager.GetOpenConnection();
             var create = new SqLiteCommandsSchoolyearQuery();
