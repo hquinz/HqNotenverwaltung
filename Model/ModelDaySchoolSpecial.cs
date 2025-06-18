@@ -1,7 +1,6 @@
-﻿
-namespace HqNotenverwaltung.Contracts
+﻿namespace HqNotenverwaltung.Model
 {
-    public class FreeDay
+    public class ModelDaySchoolSpecial
     {
         public int Id { get; set; }
 

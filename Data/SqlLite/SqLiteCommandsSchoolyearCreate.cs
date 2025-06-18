@@ -12,7 +12,6 @@ namespace HqNotenverwaltung.Data.SqlLite
                     Startyear INTEGER INTEGER PRIMARY KEY
                    ,Semestered Integer NOT NULL
                 );";
-
             return cmd;
         }
         public SqliteCommand CreateTableDaysStart(SqliteConnection connection)
@@ -26,7 +25,6 @@ namespace HqNotenverwaltung.Data.SqlLite
                    ,Remark TEXT
                    ,FOREIGN KEY (Schoolyear) REFERENCES Schoolyear(Startyear)
                 );";
-
             return cmd;
         }
         public SqliteCommand CreateTableDaysEnd(SqliteConnection connection)
@@ -40,7 +38,6 @@ namespace HqNotenverwaltung.Data.SqlLite
                    ,Remark TEXT
                    ,FOREIGN KEY (Schoolyear) REFERENCES Schoolyear(Startyear)
                 );";
-
             return cmd;
         }
 
@@ -55,7 +52,6 @@ namespace HqNotenverwaltung.Data.SqlLite
                    ,Remark TEXT
                    ,FOREIGN KEY (Schoolyear) REFERENCES Schoolyear(Startyear)
                 );";
-
             return cmd;
         }
 

@@ -1,4 +1,5 @@
 ﻿using HqNotenverwaltung.Contracts;
+using HqNotenverwaltung.Data;
 using HqNotenverwaltung.Data.SqlLite;
 using HqNotenverwaltung.ViewModel;
 using System.Diagnostics;
@@ -22,9 +23,14 @@ namespace HqNotenverwaltung
     {
         public MainWindow()
         {
-            ISchoolyear schoolyear = new SqLiteProviderSchoolyear();
+            ISchoolyear schoolyear = new RepositorySchoolyear(new SQLiteDbManager());
 
             schoolyear.ConnectAsync("Daten", "Schuljahr");
+            // TODO: löschen:
+            //Debug.AutoFlush = true;
+            //var deleteMe = new SQLiteDbManager("Daten", "Schuljahr");
+            //var seed = new Seed(deleteMe);
+            //using var _ = seed.DoAsync(deleteMe.CommandsSchoolyearQuery);
 
             InitializeComponent();
             VmSchoolYear vmSchoolYear = new(schoolyear);

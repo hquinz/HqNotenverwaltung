@@ -12,11 +12,13 @@
         <TabControl>
             <TabItem Header="Schuljahr">
                 <Grid Background="#252526">
-                    <Label Content="Schuljahr" 
+                    <Label x:Name="LblSchoolyear"
+                           Content="Schuljahr" 
                            Foreground="AntiqueWhite" 
                            Margin="10,10,0,0" Width="110" Height="40"
                            HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <ComboBox Background="AntiqueWhite" Foreground="Black"
+                    <ComboBox x:Name="ComboBoxSchoolyear"
+                              Background="AntiqueWhite" Foreground="Black"
                               Margin="120,12,0,0" Width="110" Height="36"
                               HorizontalAlignment="Left"  VerticalAlignment="Top" 
                               ItemsSource="{Binding Path=Years}"

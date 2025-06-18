@@ -5,12 +5,11 @@ namespace HqNotenverwaltung.Model
 {
     public class ModelSchoolyear
     {
-        public int Id { get; }
-        public string Title { get; set; } = "";
+        public int StartYear { get; }
         public EnumSemestered Semestered { get; set; }
-        public required List<DateOnly> DateStart { get; set; }
-        public List<DateOnly>? DateEnd { get; set; }
-        public List<FreeDay>? FreeDays { get; set; }
+        public List<ModelDaySchoolSpecial> DateStart { get; private set; } = [];
+        public List<ModelDaySchoolSpecial>? DateEnd { get; private set; } = [];
+        public List<ModelDaySchoolSpecial>? FreeDays { get; private set; } = [];
 
     }
 }

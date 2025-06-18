@@ -12,6 +12,7 @@ namespace HqNotenverwaltung.Contracts
         void Connect(string server, string database);
         Task ConnectAsync(string server, string database);
         Task UpsertSchoolyearAsync(int schoolyear, int semestered);
+        Task GetSchoolyear(int  schoolyear);
 
     }
 }
