@@ -8,11 +8,11 @@ namespace HqNotenverwaltung.Contracts
         string Server { get; }
         string Database { get; }
         List<int> Schoolyears { get; }
-        ModelSchoolyear ActiveSchoolYear { get; set; }
+        ModelSchoolyear ActiveSchoolYear { get;}
         void Connect(string server, string database);
         Task ConnectAsync(string server, string database);
         Task UpsertSchoolyearAsync(int schoolyear, int semestered);
-        Task GetSchoolyear(int  schoolyear);
+        Task GetSchoolyearAsync(int  schoolyear);
 
     }
 }

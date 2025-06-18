@@ -1,6 +1,8 @@
 ﻿using HqNotenverwaltung.Contracts;
 using HqNotenverwaltung.Data.SqlLite;
+using HqNotenverwaltung.Data.Tools;
 using HqNotenverwaltung.Model;
+using HqNotenverwaltung.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -13,8 +15,11 @@ namespace HqNotenverwaltung.Data
 {
     class RepositorySchoolyear : ISchoolyear
     {
-        private List<int> _schoolyears = [];
-        private readonly IDbManager _dbManager;
+        private List<int> schoolyears = [];
+        private readonly IDbManager dbManager;
+        private readonly SchoolyearQueries schoolyearQueries;
+        private readonly SchooldayQueries schooldayQeries;
+        private ModelSchoolyear modelSchoolyear = new();
 
         public List<int> Schoolyears
         {
@@ -22,76 +27,58 @@ namespace HqNotenverwaltung.Data
             {
                 //TODO: GetSchoolYearsAsync in CTOR and on Updating Schoolyears Delete GetSchoolYears() here
                 GetSchoolYears();
-                return _schoolyears;
+                return schoolyears;
             }
         }
 
-        public ModelSchoolyear ActiveSchoolYear { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ModelSchoolyear ActiveSchoolYear { get => modelSchoolyear; }
         public string Server { get; private set; } = "Data";
-        public string Database { get; private set; } = "Schoolyear.sqlite";
+        public string Database { get; private set; } = "Schoolyear";
 
         public RepositorySchoolyear(IDbManager dbManager)
         {
-            _dbManager = dbManager ?? throw new ArgumentNullException(nameof(dbManager), "Database manager cannot be null.");  
+            this.dbManager = dbManager ?? throw new ArgumentNullException(nameof(dbManager), "Database manager cannot be null.");  
+            this.schoolyearQueries = new SchoolyearQueries(dbManager);  
+            this.schooldayQeries = new SchooldayQueries(dbManager);
         }
 
         public void Connect(string server, string database)
         {
             Server = server;
             Database = database;
-            _dbManager.ConectionsStringUpdate(Server, Database);
-            _dbManager.CreateTables();
+            dbManager.ConectionsStringUpdate(Server, Database);
+            dbManager.CreateTables();
         }
 
         public async Task ConnectAsync(string server, string database)
         {
             Server = server;
             Database = database;
-            _dbManager.ConectionsStringUpdate(Server, Database);
-            await _dbManager.CreateTablesAsync();
+            dbManager.ConectionsStringUpdate(Server, Database);
+            await dbManager.CreateTablesAsync();
         }
-        public async Task UpsertSchoolyearAsync(int schoolyear, int semestered)
+        public async Task UpsertSchoolyearAsync(int schoolyear, int semestered) { await schoolyearQueries.UpsertSchoolyearAsync(schoolyear, semestered); }
+        public async Task GetSchoolyearAsync(int schoolyear)
         {
-            using DbConnection connection = await _dbManager.GetConnectionAsync();
+            using DbConnection connection = await dbManager.GetConnectionAsync();
             if (connection.State != System.Data.ConnectionState.Open) { throw new InvalidOperationException("Database connection is not open."); }
-            var commandCreate = _dbManager.CommandsSchoolyearQuery;
-            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertSchoolyear(connection, schoolyear, semestered));
-        }
-        public async Task GetSchoolyear(int schoolyear)
-        {
-            using DbConnection connection = await _dbManager.GetConnectionAsync();
-            if (connection.State != System.Data.ConnectionState.Open) { throw new InvalidOperationException("Database connection is not open."); }
-            var commandCreate = _dbManager.CommandsSchoolyearQuery;
-            using var reader = await _dbManager.ExecuteQueryAsync(commandCreate.GetDays(connection, "DaysStart", schoolyear));
-            //TODO: Implement this method properly (GetSchoolyear)
-            while (await reader.ReadAsync()) { Debug.WriteLine(reader.GetDateTime(0)); }
-            throw new NotImplementedException("fxxx, Got to get the schoolyear");
-
+            var commandCreate = dbManager.CommandsSchoolyearQuery;
+            modelSchoolyear.StartYear = schoolyear;
+            modelSchoolyear.Semestered = (EnumSemestered)await schoolyearQueries.GetSchoolyearSemesteredAsync(connection, commandCreate, schoolyear);
+            modelSchoolyear.DateStart = await schooldayQeries.GetSchooldaysAsync(connection, commandCreate, schoolyear, "DaysStart");
+            modelSchoolyear.DateEnd = await schooldayQeries.GetSchooldaysAsync(connection, commandCreate, schoolyear, "DaysEnd");
+            modelSchoolyear.DaysFree = await schooldayQeries.GetSchooldaysAsync(connection, commandCreate, schoolyear, "DaysFree");
         }
 
-        private void GetSchoolYears()
-        {
-            using DbConnection connection = _dbManager.GetConnection();
-            if (connection.State != System.Data.ConnectionState.Open) { throw new InvalidOperationException("Database connection is not open."); }
-            var commandCreate = _dbManager.CommandsSchoolyearQuery;
-            using var reader = _dbManager.ExecuteQuery(commandCreate.GetSchoolyears(connection));
-            while (reader.Read()) { _schoolyears.Add(reader.GetInt32(0)); }
-        }
-        private async Task GetSchoolYearsAsync()
-        {
-            using DbConnection connection = await _dbManager.GetConnectionAsync();
-            if (connection.State != System.Data.ConnectionState.Open) { throw new InvalidOperationException("Database connection is not open."); }
-            var commandCreate = _dbManager.CommandsSchoolyearQuery;
-            using var reader = await _dbManager.ExecuteQueryAsync(commandCreate.GetSchoolyears(connection));
-            while (await reader.ReadAsync()) { _schoolyears.Add(reader.GetInt32(0)); }
-        }
+        private void GetSchoolYears() { schoolyears = schoolyearQueries.GetSchoolYears(); }
+        private async Task GetSchoolYearsAsync() { schoolyears = await schoolyearQueries.GetSchoolYearsAsync(); }
 
 
 
         public void Dispose()
         {
-            _dbManager.Dispose();
-            _schoolyears.Clear();
+            dbManager.Dispose();
+            schoolyears.Clear();
         }
     }
 }

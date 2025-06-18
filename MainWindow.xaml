@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HqNotenverwaltung"
         mc:Ignorable="d"
-        Title="Notenverwaltung" Height="450" Width="800"
+        Title="Notenverwaltung" Height="450" Width="1600"
         Background="SlateGray"
         FontSize="22">
     <Grid>
@@ -22,7 +22,23 @@
                               Margin="120,12,0,0" Width="110" Height="36"
                               HorizontalAlignment="Left"  VerticalAlignment="Top" 
                               ItemsSource="{Binding Path=Years}"
-                              SelectedValue="{Binding Path=SelectedYear}" RenderTransformOrigin="0.481,-0.347"/>
+                              SelectedValue="{Binding Path=SelectedYear}" 
+                              RenderTransformOrigin="0.481,-0.347"
+                              />
+                    <Label x:Name="LblCalculation"
+                           Content="Durchrechnung" 
+                           Foreground="AntiqueWhite" 
+                           Margin="230,10,0,0" Width="160" Height="40"
+                           HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <ComboBox x:Name="ComboBoxSemstered"
+                              Background="AntiqueWhite" Foreground="Black"
+                              Margin="400,12,0,0" Width="110" Height="36"
+                              HorizontalAlignment="Left"  VerticalAlignment="Top" 
+                              ItemsSource="{Binding Path=SemesteredOptions}"
+                              SelectedValue="{Binding Path=SelectedSemestered}" 
+                              RenderTransformOrigin="0.481,-0.347"
+                              />
+
                     <Button Content="Neu" 
                             Margin="10,55,0,0" Width="110" Height="36"
                             HorizontalAlignment="Left"  VerticalAlignment="Top"/>

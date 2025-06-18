@@ -27,6 +27,17 @@ namespace HqNotenverwaltung.Data.SqlLite
             cmd.Parameters.AddWithValue("$semestered", semestered);
             return cmd;
         }
+        public DbCommand GetSchoolyearSemestered(DbConnection connection, int schoolyear)
+        {
+            var sqliteConnection = connection as SqliteConnection ?? throw new ArgumentNullException(nameof(connection), "DbConnection cannot be null.");
+            var cmd = sqliteConnection.CreateCommand();
+            cmd.CommandText =
+                @"SELECT Semestered FROM Schoolyear WHERE Startyear = $schoolyear;";
+            cmd.Parameters.AddWithValue("$schoolyear", schoolyear);
+            return cmd;
+        }
+
+
         #endregion
         #region Days
         public DbCommand GetDays(DbConnection connection, string table, int schoolyear)

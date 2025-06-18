@@ -1,10 +1,12 @@
 ﻿
+using System.ComponentModel;
+
 namespace HqNotenverwaltung.Contracts
 {
     public enum EnumSemestered
     {
-        OneYear,
-        TwoSemesters,
-        ThreeSemesters,
+         Jahr
+        ,Semester
+//        ,Trimester
     }
 }
