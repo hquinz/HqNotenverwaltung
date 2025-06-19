@@ -1,4 +1,5 @@
 ﻿using HqNotenverwaltung.Contracts;
+using HqNotenverwaltung.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,83 +20,67 @@ namespace HqNotenverwaltung.ViewModel
             get { return getSchoolyears(); }
         }
 
-        private string _SelectedYear ="";
-        public string SelectedYear
+        private string yearSelected ="";
+        public string YearSelected
         {
-            get { return _SelectedYear; }
+            get { return yearSelected; }
             set {
-                _SelectedYear = value; 
-                if (!string.IsNullOrEmpty(value))
-                {
-                    Debug.WriteLine("Selected Year: " + value);
-                    SchoolyearModel.GetSchoolyearAsync(int.Parse(value.Split('/')[0]));
-                }
-                OnPropertyChanged("SelectedYear");
-                OnPropertyChanged("SelectedSemestered");
+                yearSelected = value; 
+                if (!string.IsNullOrEmpty(value)) { SchoolyearModel.GetSchoolyearAsync(int.Parse(value.Split('/')[0])); }
+                UpdateViewSchoolyear();
             }
         }
-        public EnumSemestered SelectedSemestered
+        public EnumSemestered SemesteredSelected
         {
             get { return SchoolyearModel.ActiveSchoolYear.Semestered; }
             set
             {
                 SchoolyearModel.ActiveSchoolYear.Semestered = value;
-                OnPropertyChanged("SelectedSemestered");
             }
         }
-        public DateOnly StartDateYear
+        public DateTime DateYearStart
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateStart[0].Date; }
+            get { return SchoolyearModel.ActiveSchoolYear.DateStart[0].Date.ToDateTime(new TimeOnly(0)); }
             set
             {
-                SchoolyearModel.ActiveSchoolYear.DateStart[0].Id = 0;
-                SchoolyearModel.ActiveSchoolYear.DateStart[0].Date = value;
-                SchoolyearModel.ActiveSchoolYear.DateStart[0].Remark = "Start Schuljahr";
-                OnPropertyChanged("StartDateYear");
+                int index = 0;
+                SchoolyearModel.ActiveSchoolYear.DateStart[index]= GetSchooldayFromDtPicker(index, value, "Start Schuljahr");
             }
         }
-        public DateOnly StartDateTechnicalSchool
+        public DateTime DateTechnicalSchoolStart
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateStart[1].Date; }
+            get { return SchoolyearModel.ActiveSchoolYear.DateStart[1].Date.ToDateTime(new TimeOnly(0)); }
             set
             {
-                SchoolyearModel.ActiveSchoolYear.DateStart[0].Id = 1;
-                SchoolyearModel.ActiveSchoolYear.DateStart[0].Date = value;
-                SchoolyearModel.ActiveSchoolYear.DateStart[0].Remark = "Start Fachschule";
-                OnPropertyChanged("StartDateTechnicalSchool");
+                int index = 1;
+                SchoolyearModel.ActiveSchoolYear.DateStart[index] = GetSchooldayFromDtPicker(index, value, "Start Fachschule");
             }
         }
-        public DateOnly EndDateSemester
+        public DateTime DateSemesterEnd
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[0].Date; }
+            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[0].Date.ToDateTime(new TimeOnly(0)); }
             set
             {
-                SchoolyearModel.ActiveSchoolYear.DateEnd[0].Id = 0;
-                SchoolyearModel.ActiveSchoolYear.DateEnd[0].Date = value;
-                SchoolyearModel.ActiveSchoolYear.DateEnd[0].Remark = "Ende Semester";
-                OnPropertyChanged("EndDateSemester");
+                int index = 0;
+                SchoolyearModel.ActiveSchoolYear.DateEnd[index] = GetSchooldayFromDtPicker(index, value, "Ende Semester");
             }
         }
-        public DateOnly EndDateVocationalSchool
+        public DateTime DateVocationalSchoolEnd
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[1].Date; }
+            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[1].Date.ToDateTime(new TimeOnly(0)); }
             set
             {
-                SchoolyearModel.ActiveSchoolYear.DateEnd[0].Id = 1;
-                SchoolyearModel.ActiveSchoolYear.DateEnd[0].Date = value;
-                SchoolyearModel.ActiveSchoolYear.DateEnd[0].Remark = "Ende Matruaklassen";
-                OnPropertyChanged("EndDateVocationalSchool");
+                int index = 1;
+                SchoolyearModel.ActiveSchoolYear.DateEnd[index] = GetSchooldayFromDtPicker(index, value, "Ende Matruaklassen");
             }
         }
-        public DateOnly EndDateYear
+        public DateTime DateYearEnd
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[3].Date; }
+            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[2].Date.ToDateTime(new TimeOnly(0)); }
             set
             {
-                SchoolyearModel.ActiveSchoolYear.DateStart[3].Id = 0;
-                SchoolyearModel.ActiveSchoolYear.DateStart[3].Date = value;
-                SchoolyearModel.ActiveSchoolYear.DateStart[3].Remark = "Ende Schuljahr";
-                OnPropertyChanged("EndDateYear");
+                int index = 2;
+                SchoolyearModel.ActiveSchoolYear.DateEnd[index] = GetSchooldayFromDtPicker(index, value, "Ende Schuljahr");
             }
         }
 
@@ -109,8 +94,27 @@ namespace HqNotenverwaltung.ViewModel
                 var nextYear = year+1;
                 years.Add(year.ToString() + "/" + nextYear.ToString());
             }
-            if (string.IsNullOrEmpty(SelectedYear)) { SelectedYear = years.FirstOrDefault(""); }
+            if (string.IsNullOrEmpty(YearSelected)) { YearSelected = years.FirstOrDefault(""); }
             return years;
+        }
+        private ModelSchooldaySpecial GetSchooldayFromDtPicker (int index, DateTime value, string remark) 
+        {
+            return new ModelSchooldaySpecial
+            {
+                Id = index,
+                Date = DateOnly.FromDateTime(value),
+                Remark = remark 
+            };
+        }
+
+        private void UpdateViewSchoolyear()
+        {
+            OnPropertyChanged("SemesteredSelected");
+            OnPropertyChanged("DateYearStart");
+            OnPropertyChanged("DateTechnicalSchoolStart");
+            OnPropertyChanged("DateSemesterEnd");
+            OnPropertyChanged("DateVocationalSchoolEnd");
+            OnPropertyChanged("DateYearEnd");
         }
 
         internal void OnPropertyChanged(string prop)

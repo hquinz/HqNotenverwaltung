@@ -3,51 +3,144 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HqNotenverwaltung"
+        xmlns:local="clr-namespace:HqNotenverwaltung" xmlns:viewmodel="clr-namespace:HqNotenverwaltung.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:VmSchoolYear}"
         mc:Ignorable="d"
         Title="Notenverwaltung" Height="450" Width="1600"
         Background="SlateGray"
         FontSize="22">
+    
     <Grid>
         <TabControl>
             <TabItem Header="Schuljahr">
-                <Grid Background="#252526">
-                    <Label x:Name="LblSchoolyear"
-                           Content="Schuljahr" 
-                           Foreground="AntiqueWhite" 
-                           Margin="10,10,0,0" Width="110" Height="40"
-                           HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <ComboBox x:Name="ComboBoxSchoolyear"
-                              Background="AntiqueWhite" Foreground="Black"
-                              Margin="120,12,0,0" Width="110" Height="36"
-                              HorizontalAlignment="Left"  VerticalAlignment="Top" 
-                              ItemsSource="{Binding Path=Years}"
-                              SelectedValue="{Binding Path=SelectedYear}" 
-                              RenderTransformOrigin="0.481,-0.347"
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <Grid x:Name="GridMain"
+                          Background="#252526">
+                        <Grid x:Name="SchoolyearEsentials">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="180"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Erste Zeile -->
+                            <Label x:Name="LblSchoolyear"
+                                   Content="Schuljahr:" 
+                                   Foreground="AntiqueWhite" 
+                                   Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
+                                   Height="36" 
+                                   HorizontalContentAlignment="Right"
+                                    />
+                            <ComboBox x:Name="ComboBoxSchoolyear"
+                                      Background="AntiqueWhite" Foreground="Black"
+                                      Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                                      Height="36" 
+                                      ItemsSource="{Binding Path=Years}"
+                                      SelectedValue="{Binding Path=YearSelected}" 
+                                      />
+                            <Label x:Name="LblCalculation"
+                                   Content="Durchrechnung:" 
+                                   Foreground="AntiqueWhite"
+                                   Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"
+                                   Height="36"
+                                   HorizontalContentAlignment="Right"
+                                   />
+                            <ComboBox x:Name="ComboBoxSemstered"
+                                      Background="AntiqueWhite" Foreground="Black"
+                                      Grid.Row="0" Grid.Column="3" VerticalAlignment="Center"
+                                      Height="36" 
+                                      ItemsSource="{Binding Path=SemesteredOptions}"
+                                      SelectedValue="{Binding Path=SemesteredSelected}" 
                               />
-                    <Label x:Name="LblCalculation"
-                           Content="Durchrechnung" 
-                           Foreground="AntiqueWhite" 
-                           Margin="230,10,0,0" Width="160" Height="40"
-                           HorizontalAlignment="Left" VerticalAlignment="Top" />
-                    <ComboBox x:Name="ComboBoxSemstered"
-                              Background="AntiqueWhite" Foreground="Black"
-                              Margin="400,12,0,0" Width="110" Height="36"
-                              HorizontalAlignment="Left"  VerticalAlignment="Top" 
-                              ItemsSource="{Binding Path=SemesteredOptions}"
-                              SelectedValue="{Binding Path=SelectedSemestered}" 
-                              RenderTransformOrigin="0.481,-0.347"
-                              />
+                            <Label x:Name="LblStartSchoolyear"
+                                   Content="Start Schuljahr:" 
+                                   Foreground="AntiqueWhite"
+                                   Grid.Row="0" Grid.Column="4" VerticalAlignment="Center"
+                                   Height="36"
+                                   HorizontalContentAlignment="Right"
+                                   />
+                            <DatePicker x:Name="DatePickerStartSchoolyear"
+                                        Background="AntiqueWhite" Foreground="Black"
+                                        Grid.Row="0" Grid.Column="5" VerticalAlignment="Center"
+                                        Height="36"
+                                        SelectedDateFormat="Short"
+                                        SelectedDate="{Binding Path= DateYearStart}"
+                                />
+                            <Label x:Name="LblStartSchoolyearTS"
+                                   Content="Start Fachschule:" 
+                                   Foreground="AntiqueWhite"
+                                   Grid.Row="0" Grid.Column="6" VerticalAlignment="Center"
+                                   Height="36"
+                                   HorizontalContentAlignment="Right"
+                                   />
+                            <DatePicker x:Name="DatePickerStartSchoolyearTS"
+                                        Background="AntiqueWhite" Foreground="Black"
+                                        Grid.Row="0" Grid.Column="7" VerticalAlignment="Center"
+                                        Height="36"
+                                        SelectedDateFormat="Short"
+                                        SelectedDate="{Binding Path= DateTechnicalSchoolStart}"
+                                    />
+                            <!-- Zweite Zeile-->
+                            <Button Content="Neu" 
+                                    Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                                    Height="36"
+                                    />
+                            <Label x:Name="LblEndSemester"
+                                   Content="Ende Semester:" 
+                                   Foreground="AntiqueWhite"
+                                   Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"
+                                   Height="36"
+                                   HorizontalContentAlignment="Right"
+                                   />
+                            <DatePicker x:Name="DatePickerEndSemester"
+                                        Background="AntiqueWhite" Foreground="Black"
+                                        Grid.Row="1" Grid.Column="3" VerticalAlignment="Center"
+                                        Height="36"
+                                        SelectedDateFormat="Short"
+                                        SelectedDate="{Binding Path= DateSemesterEnd}"
+                                   />
+                            <Label x:Name="LblEndVocational"
+                                   Content="Ende 5.Jg:" 
+                                   Foreground="AntiqueWhite"
+                                   Grid.Row="1" Grid.Column="4" VerticalAlignment="Center"
+                                   Height="36"
+                                   HorizontalContentAlignment="Right"
+                                   />
+                            <DatePicker x:Name="DatePickerEndVocational"
+                                        Background="AntiqueWhite" Foreground="Black"
+                                        Grid.Row="1" Grid.Column="5" VerticalAlignment="Center"
+                                        Height="36"
+                                        SelectedDateFormat="Short"
+                                        SelectedDate="{Binding Path= DateVocationalSchoolEnd}"
+                                   />
+                            <Label x:Name="LblEndYear"
+                                   Content="Ende Schuljahr:" 
+                                   Foreground="AntiqueWhite"
+                                   Grid.Row="1" Grid.Column="6" VerticalAlignment="Center"
+                                   Height="36"
+                                   HorizontalContentAlignment="Right"
+                                   />
+                            <DatePicker x:Name="DatePickerEndYear"
+                                        Background="AntiqueWhite" Foreground="Black"
+                                        Grid.Row="1" Grid.Column="7" VerticalAlignment="Center"
+                                        Height="36"
+                                        SelectedDateFormat="Short"
+                                        SelectedDate="{Binding Path= DateYearEnd}"
+                                   />
 
-                    <Button Content="Neu" 
-                            Margin="10,55,0,0" Width="110" Height="36"
-                            HorizontalAlignment="Left"  VerticalAlignment="Top"/>
-                    <Button Content="Bearbeiten" 
-                            Margin="120,55,0,0" Width="110" Height="36"
-                            HorizontalAlignment="Left"  VerticalAlignment="Top"/>
 
-                </Grid>
-
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="SoontoCome">
                 <Grid Background="#FFE5E5E5"/>
