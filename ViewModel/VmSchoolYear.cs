@@ -1,5 +1,6 @@
 ﻿using HqNotenverwaltung.Contracts;
 using HqNotenverwaltung.Model;
+using HqNotenverwaltung.Tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,9 @@ namespace HqNotenverwaltung.ViewModel
 {
     public class VmSchoolYear(ISchoolyear schoolyear) : INotifyPropertyChanged
     {
-        private ISchoolyear SchoolyearModel => schoolyear;
+        private ISchoolyear schoolyearModel => schoolyear;
+        private ToolsDateTime toolsDateTime => new();
+        private enum enumDateTabels { Start, End, Free};
 
         public Array SemesteredOptions => Enum.GetValues(typeof(EnumSemestered));
         public List<String> Years { 
@@ -26,68 +29,48 @@ namespace HqNotenverwaltung.ViewModel
             get { return yearSelected; }
             set {
                 yearSelected = value; 
-                if (!string.IsNullOrEmpty(value)) { SchoolyearModel.GetSchoolyearAsync(int.Parse(value.Split('/')[0])); }
-                UpdateViewSchoolyear();
+                if (!string.IsNullOrEmpty(value)) { schoolyearModel.GetSchoolyearAsync(int.Parse(value.Split('/')[0])); }
+                updateViewSchoolyear();
             }
         }
         public EnumSemestered SemesteredSelected
         {
-            get { return SchoolyearModel.ActiveSchoolYear.Semestered; }
-            set
-            {
-                SchoolyearModel.ActiveSchoolYear.Semestered = value;
-            }
+            get { return schoolyearModel.ActiveSchoolYear.Semestered; }
+            set { schoolyearModel.ActiveSchoolYear.Semestered = value; }
         }
         public DateTime DateYearStart
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateStart[0].Date.ToDateTime(new TimeOnly(0)); }
-            set
-            {
-                int index = 0;
-                SchoolyearModel.ActiveSchoolYear.DateStart[index]= GetSchooldayFromDtPicker(index, value, "Start Schuljahr");
-            }
+            get { return schoolyearModel.ActiveSchoolYear.DateStart[0].Date.ToDateTime(new TimeOnly(0)); }
+            set { if (registerSpecialDay(enumDateTabels.Start, 0, value)) { OnPropertyChanged("DateYearStart"); } }
         }
         public DateTime DateTechnicalSchoolStart
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateStart[1].Date.ToDateTime(new TimeOnly(0)); }
-            set
-            {
-                int index = 1;
-                SchoolyearModel.ActiveSchoolYear.DateStart[index] = GetSchooldayFromDtPicker(index, value, "Start Fachschule");
-            }
+            get { return schoolyearModel.ActiveSchoolYear.DateStart[1].Date.ToDateTime(new TimeOnly(0)); }
+            set { if (registerSpecialDay(enumDateTabels.Start, 1, value)) { OnPropertyChanged("DateTechnicalSchoolStart"); } } 
         }
         public DateTime DateSemesterEnd
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[0].Date.ToDateTime(new TimeOnly(0)); }
+            get { return schoolyearModel.ActiveSchoolYear.DateEnd[0].Date.ToDateTime(new TimeOnly(0)); }
             set
-            {
-                int index = 0;
-                SchoolyearModel.ActiveSchoolYear.DateEnd[index] = GetSchooldayFromDtPicker(index, value, "Ende Semester");
-            }
+            { if (registerSpecialDay(enumDateTabels.End, 0, value)) { OnPropertyChanged("DateSemesterEnd"); } }
         }
         public DateTime DateVocationalSchoolEnd
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[1].Date.ToDateTime(new TimeOnly(0)); }
+            get { return schoolyearModel.ActiveSchoolYear.DateEnd[1].Date.ToDateTime(new TimeOnly(0)); }
             set
-            {
-                int index = 1;
-                SchoolyearModel.ActiveSchoolYear.DateEnd[index] = GetSchooldayFromDtPicker(index, value, "Ende Matruaklassen");
-            }
+            { if (registerSpecialDay(enumDateTabels.End, 1, value)) { OnPropertyChanged("DateVocationalSchoolEnd"); }; }
         }
         public DateTime DateYearEnd
         {
-            get { return SchoolyearModel.ActiveSchoolYear.DateEnd[2].Date.ToDateTime(new TimeOnly(0)); }
+            get { return schoolyearModel.ActiveSchoolYear.DateEnd[2].Date.ToDateTime(new TimeOnly(0)); }
             set
-            {
-                int index = 2;
-                SchoolyearModel.ActiveSchoolYear.DateEnd[index] = GetSchooldayFromDtPicker(index, value, "Ende Schuljahr");
-            }
+            { if (registerSpecialDay(enumDateTabels.End, 2, value)) { OnPropertyChanged("DateYearEnd"); }; }
         }
 
         public void RefreshSchoolyears() { OnPropertyChanged("Years"); }
         private List<string> getSchoolyears()
         {
-            List<int> yearsStart = SchoolyearModel.Schoolyears;
+            List<int> yearsStart = schoolyearModel.Schoolyears;
             List<string> years = [];
             foreach (var year in yearsStart)
             {
@@ -97,7 +80,47 @@ namespace HqNotenverwaltung.ViewModel
             if (string.IsNullOrEmpty(YearSelected)) { YearSelected = years.FirstOrDefault(""); }
             return years;
         }
-        private ModelSchooldaySpecial GetSchooldayFromDtPicker (int index, DateTime value, string remark) 
+        /// <summary>
+        /// Checks if the Date fits to its purpose (Starts on Monda, Ends on Friday), 
+        /// changes it if necessary and writes it to the model.
+        /// </summary>
+        /// <param name="table">Table to be used</param>
+        /// <param name="index">Index in Table to be usef</param>
+        /// <param name="value">Value to be written</param>
+        /// <returns>Date-value had to be changed</returns>
+        private bool registerSpecialDay (enumDateTabels table, int index, DateTime value)
+        {
+            bool _dateChanged = false;
+            DateTime _day;
+            string _remark = "";
+            switch (table)
+            {
+                case enumDateTabels.Start:
+                    _day = toolsDateTime.GetDateOfWeekday(value, DayOfWeek.Monday);
+                    _dateChanged = _day != value;
+                    switch (index)
+                    {
+                        case 0: _remark = "Start Schuljahr"; break;
+                        case 1: _remark = "Start Fachschule"; break;
+                    }
+                    schoolyearModel.ActiveSchoolYear.DateStart[index] = getSchooldayFromDtPicker(index, _day, _remark);
+                    break;
+
+                case enumDateTabels.End:
+                    _day = toolsDateTime.GetDateOfWeekday(value, DayOfWeek.Friday);
+                    _dateChanged = _day != value;
+                    switch (index)
+                    {
+                        case 0: _remark = "Ende Semester"; break;
+                        case 1: _remark = "Ende Matruaklassen"; break;
+                        case 2: _remark = "Ende Schuljahr"; break;
+                    }
+                    schoolyearModel.ActiveSchoolYear.DateEnd[index] = getSchooldayFromDtPicker(index, _day, _remark);
+                    break;
+            }
+            return _dateChanged;
+        }
+        private ModelSchooldaySpecial getSchooldayFromDtPicker (int index, DateTime value, string remark) 
         {
             return new ModelSchooldaySpecial
             {
@@ -107,7 +130,7 @@ namespace HqNotenverwaltung.ViewModel
             };
         }
 
-        private void UpdateViewSchoolyear()
+        private void updateViewSchoolyear()
         {
             OnPropertyChanged("SemesteredSelected");
             OnPropertyChanged("DateYearStart");
