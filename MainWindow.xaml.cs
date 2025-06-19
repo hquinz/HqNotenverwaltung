@@ -2,6 +2,7 @@
 using HqNotenverwaltung.Data;
 using HqNotenverwaltung.Data.SqlLite;
 using HqNotenverwaltung.ViewModel;
+using HqNotenverwaltung.ViewPopups;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
@@ -21,9 +22,10 @@ namespace HqNotenverwaltung
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly VmSchoolYear vmSchoolYear;
         public MainWindow()
         {
-            ISchoolyear schoolyear = new RepositorySchoolyear(new SQLiteDbManager());
+            using ISchoolyear schoolyear = new RepositorySchoolyear(new SQLiteDbManager());
 
             schoolyear.ConnectAsync("Daten", "Schuljahr");
             // TODO: löschen:
@@ -33,10 +35,19 @@ namespace HqNotenverwaltung
             //using var _ = seed.DoAsync(deleteMe.CommandsSchoolyearQuery);
 
             InitializeComponent();
-            VmSchoolYear vmSchoolYear = new(schoolyear);
+            vmSchoolYear = new(schoolyear);
             DataContext = vmSchoolYear;
-            // https://stackoverflow.com/questions/561166/binding-a-wpf-combobox-to-a-custom-list
 
+        }   
+        private void ButtonNewScoolyearMousUp(object sender, RoutedEventArgs e)
+        {
+            var popup = new PopupNewSchoolyear { DataContext = this.DataContext };
+            //HACK Provide proper startinformation for new schoolyear
+            vmSchoolYear.YearStartNew = DateTime.Now.ToString("yy");
+            bool? result = popup.ShowDialog();
+            //HACK React on new schoolyear
+            Debug.WriteLine(result.HasValue ? result.Value.ToString() : "No result returned from popup.");
         }
+
     }
 }

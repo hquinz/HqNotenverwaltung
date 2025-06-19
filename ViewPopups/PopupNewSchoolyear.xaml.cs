@@ -23,5 +23,11 @@ namespace HqNotenverwaltung.ViewPopups
         {
             InitializeComponent();
         }
+
+        private void BtnSchoolyearNewCancelMouseUp(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+            this.Close();
+        }
     }
 }

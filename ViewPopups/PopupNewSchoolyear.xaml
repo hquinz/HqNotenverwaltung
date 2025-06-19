@@ -5,11 +5,117 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HqNotenverwaltung.ViewPopups"
         mc:Ignorable="d"
-        Title="Neues Schuljahr Anlegen" Height="450" Width="800"
+        Title="Neues Schuljahr Anlegen" Height="295" Width="670"
         Background="SlateGray"
         FontSize="22">
-    
-    <Grid>
-        
-    </Grid>
+    <Border BorderThickness="5" BorderBrush="DarkGreen" Margin="0">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <Grid x:Name="GridPopUpSchoolyearNew">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="180"/>
+                    <ColumnDefinition Width="140"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Zeile 1 -->
+                <Label  x:Name="LblSchoolyear"
+                        Content="Jahr Start:" 
+                        Foreground="AntiqueWhite" 
+                        Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
+                        Height="40" 
+                        HorizontalContentAlignment="Left"
+                        />
+
+                <Label  x:Name="LblCalculation"
+                        Content="Durchrechnung:" 
+                        Foreground="AntiqueWhite" 
+                        Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"
+                        Height="40" 
+                        HorizontalContentAlignment="Left"
+                        />
+
+                <!-- Zeile 2 -->
+                <Label  x:Name="LblStart"
+                        Content="Schulstart:" 
+                        Foreground="AntiqueWhite" 
+                        Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
+                        Height="40" 
+                        HorizontalContentAlignment="Left"
+                        />
+                <TextBox x:Name="TextBoxYearStart"
+                         Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                         Height="40" 
+                         HorizontalContentAlignment="Left"
+                         TextAlignment="Center"
+                         Text="{Binding YearStartNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         />
+
+                <Label  x:Name="LblEnd"
+                        Content="Schulende:" 
+                        Foreground="AntiqueWhite" 
+                        Grid.Row="1" Grid.Column="2" VerticalAlignment="Center"
+                        Height="40" 
+                        HorizontalContentAlignment="Left"
+                        />
+
+                <!-- Zeile 3 -->
+                <Label  x:Name="LblSemster"
+                        Content="Ende Semester:" 
+                        Foreground="AntiqueWhite" 
+                        Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"
+                        Height="40" 
+                        HorizontalContentAlignment="Left"
+                        />
+
+                <Label  x:Name="LblEndVocational"
+                        Content="Ende 5.Jg:" 
+                        Foreground="AntiqueWhite" 
+                        Grid.Row="2" Grid.Column="2" VerticalAlignment="Center"
+                        Height="40" 
+                        HorizontalContentAlignment="Left"
+                        />
+
+                <!-- Zeile 4 -->
+                <Label  x:Name="LblStartTechnicalSchool"
+                        Content="Start Fachschule" 
+                        Foreground="AntiqueWhite" 
+                        Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"
+                        Height="40" 
+                        HorizontalContentAlignment="Left"
+                        />
+
+                <!-- Zeile 5 -->
+                <Label  x:Name="LblStartAutumnBreak"
+                        Content="Start Herbstferien" 
+                        Foreground="AntiqueWhite" 
+                        Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
+                        Height="40" 
+                        HorizontalContentAlignment="Left"
+                        />
+
+
+                <!-- Zeile 6 -->
+                <Button x:Name="BtnCancel"
+                                        Content="Abbruch" 
+                                        Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"
+                                        Click="BtnSchoolyearNewCancelMouseUp"
+                                        />
+                <Button x:Name="BtnSave"
+                                        Content="Anlegen" 
+                                        Grid.Row="5" Grid.Column="3" VerticalAlignment="Center"
+                                        Height="40"
+                                        />
+
+            </Grid>
+        </ScrollViewer>
+    </Border>
 </Window>

@@ -20,12 +20,12 @@ namespace HqNotenverwaltung.Data
             using DbConnection connection = await _dbManager.GetConnectionAsync();
             if (connection.State != System.Data.ConnectionState.Open) { throw new InvalidOperationException("Database connection is not open."); }
             var commandCreate = _dbManager.CommandsSchoolyearQuery;
-            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertSchoolyear(connection, 25, 0));
-            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 1, "DaysStart", 25, new DateOnly(2025, 09, 01), "Schulstart"));
-            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 2, "DaysStart", 25, new DateOnly(2025, 11, 01), "Schulstart 4AFME"));
-            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 1, "DaysEnd", 25, new DateOnly(2026, 02, 02), "Semster"));
-            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 2, "DaysEnd", 25, new DateOnly(2026, 05, 20), "Ende Maturaklassen"));
-            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 3, "DaysEnd", 25, new DateOnly(2026, 07, 03), "Ende Schuljahr"));
+            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertSchoolyear(connection, 24, 0));
+            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 1, "DaysStart", 24, new DateOnly(2024, 09, 09), "Schulstart"));
+            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 2, "DaysStart", 24, new DateOnly(2024, 11, 18), "Schulstart 4AFME"));
+            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 1, "DaysEnd"  , 24, new DateOnly(2025, 02, 17), "Semster"));
+            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 2, "DaysEnd"  , 24, new DateOnly(2025, 05, 02), "Ende Maturaklassen"));
+            await _dbManager.ExecuteNonQueryAsync(commandCreate.UpsertDay(connection, 3, "DaysEnd"  , 24, new DateOnly(2025, 07, 03), "Ende Schuljahr"));
         }
 
 

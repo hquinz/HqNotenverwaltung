@@ -56,6 +56,10 @@ namespace HqNotenverwaltung.ViewModel
             set
             { if (registerSpecialDay(EnumDateTabels.End, 0, value)) { OnPropertyChanged("DateSemesterEnd"); } }
         }
+
+        public String YearStartNew { get; set; } = DateTime.Now.ToString("yy");
+
+
         public DateTime DateVocationalSchoolEnd
         {
             get { return schoolyearModel.ActiveSchoolYear.DateEnd[1].Date.ToDateTime(new TimeOnly(0)); }
@@ -94,6 +98,8 @@ namespace HqNotenverwaltung.ViewModel
             }
             return _day != value;
         }
+
+
 
         private void updateViewSchoolyear()
         {

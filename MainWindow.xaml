@@ -32,7 +32,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Erste Zeile -->
+                            <!-- Zeile 1 -->
                             <Label x:Name="LblSchoolyear"
                                    Content="Schuljahr:" 
                                    Foreground="AntiqueWhite" 
@@ -90,7 +90,7 @@
                                         SelectedDate="{Binding Path= DateSemesterEnd}"
                                    />
 
-                            <!-- Zweite Zeile-->
+                            <!-- Zeile 2 -->
                             <Label x:Name="LblCalculation"
                                    Content="Durchrechnung:" 
                                    Foreground="AntiqueWhite"
@@ -137,6 +137,7 @@
                                     Content="Neu" 
                                     Grid.Row="1" Grid.Column="6" VerticalAlignment="Center"
                                     Height="40"
+                                    Click="ButtonNewScoolyearMousUp"
                                     />
                             <Button x:Name="BtnSaveSchoolyear"
                                     Content="Speichern" 
