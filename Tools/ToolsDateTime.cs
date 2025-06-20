@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace HqNotenverwaltung.Tools
 {
-    //Todo Make static
     public static class ToolsDateTime
     {
         /// <summary>

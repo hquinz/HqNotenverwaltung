@@ -25,8 +25,13 @@ namespace HqNotenverwaltung
         private readonly VmSchoolYear vmSchoolYear;
         public MainWindow()
         {
-            using ISchoolyear schoolyear = new RepositorySchoolyear(new SQLiteDbManager());
+            //HACK List
+            // - GUI New Schoolyear
+            // - Control for Numeric Input
+            // - Store Schoolyear in DB
+            // - Schoolyearstatistics
 
+            using ISchoolyear schoolyear = new RepositorySchoolyear(new SQLiteDbManager());
             schoolyear.ConnectAsync("Daten", "Schuljahr");
             // TODO: löschen:
             //Debug.AutoFlush = true;
