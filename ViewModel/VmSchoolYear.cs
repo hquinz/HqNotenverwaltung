@@ -71,6 +71,7 @@ namespace HqNotenverwaltung.ViewModel
         public String YearStartNew
         { get => yearStartNew;
             set { yearStartNew = value;
+                Debug.WriteLine("YearStartNew set to: " + yearStartNew);
                 initializeSchoolyearNew(25);
             }
         }

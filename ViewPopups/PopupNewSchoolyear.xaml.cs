@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,15 @@ namespace HqNotenverwaltung.ViewPopups
             InitializeComponent();
         }
 
-        private void BtnSchoolyearNewCancelMouseUp(object sender, RoutedEventArgs e)
+        private void BtnSchoolyearNewCancelClick(object sender, RoutedEventArgs e)
         {
             this.DialogResult = false;
+            this.Close();
+        }
+
+        private void BtnSchoolyearNewSaveClick(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
             this.Close();
         }
     }

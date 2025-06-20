@@ -26,9 +26,13 @@ namespace HqNotenverwaltung
         public MainWindow()
         {
             //HACK List
-            // - GUI New Schoolyear
             // - Control for Numeric Input
+            //   - Make unit for Numeric Input visible
+            //   - Enable kommas for int
+            // - Calculate days off
             // - Store Schoolyear in DB
+            // - Gui for Days off
+            // - Gui to Maniplulate Days off
             // - Schoolyearstatistics
 
             using ISchoolyear schoolyear = new RepositorySchoolyear(new SQLiteDbManager());
@@ -47,7 +51,6 @@ namespace HqNotenverwaltung
         private void ButtonNewScoolyearMousUp(object sender, RoutedEventArgs e)
         {
             var popup = new PopupNewSchoolyear { DataContext = this.DataContext };
-            //HACK Provide proper startinformation for new schoolyear
             vmSchoolYear.YearStartNew = DateTime.Now.ToString("yy");
             bool? result = popup.ShowDialog();
             //HACK React on new schoolyear

@@ -27,7 +27,6 @@ namespace HqNotenverwaltung.ViewModel
             string _remark = "";
             switch (table)
             {
-                //TODO: Delete comments
                 case EnumDateTabels.Start:
                     day = ToolsDateTime.GetDateOfWeekday(value, DayOfWeek.Monday);
                     _remark = ToolsEnum.GetDescription<EnumSchoolyearStartRemarks>(index);
