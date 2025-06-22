@@ -26,9 +26,6 @@ namespace HqNotenverwaltung
         public MainWindow()
         {
             //HACK List
-            // - Control for Numeric Input
-            //   - Make unit for Numeric Input visible
-            //   - Enable kommas for int
             // - Calculate days off
             // - Store Schoolyear in DB
             // - Gui for Days off
@@ -47,15 +44,15 @@ namespace HqNotenverwaltung
             vmSchoolYear = new(schoolyear);
             DataContext = vmSchoolYear;
 
-        }   
-        private void ButtonNewScoolyearMousUp(object sender, RoutedEventArgs e)
+        }
+        private void ButtonNewScoolyearClick(object sender, RoutedEventArgs e)
         {
             var popup = new PopupNewSchoolyear { DataContext = this.DataContext };
-            vmSchoolYear.YearStartNew = DateTime.Now.ToString("yy");
+            vmSchoolYear.YearStartNew = DateTime.Now.Year % 100;
             bool? result = popup.ShowDialog();
             //HACK React on new schoolyear
             Debug.WriteLine(result.HasValue ? result.Value.ToString() : "No result returned from popup.");
         }
 
-    }
+     }
 }

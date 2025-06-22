@@ -43,9 +43,10 @@
                             TextAlignment="Center"
                             AllowNegative="False"
                             AllowPositive="True"
-                            DecimalPlaces="2"
-                            Unit="T"
-                            Text="{Binding YearStartNew, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            PreDecimalPlaces="2"
+                            DecimalPlaces="0"
+                            Unit=""
+                            Value="{Binding YearStartNew}"
                            />
 
                 <Label  x:Name="LblCalculation"

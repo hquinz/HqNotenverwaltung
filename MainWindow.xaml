@@ -4,6 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HqNotenverwaltung" xmlns:viewmodel="clr-namespace:HqNotenverwaltung.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:VmSchoolYear}"
+    
+        xmlns:WpfHqCtrl="clr-namespace:HqNotenverwaltung.WpfHq.Controls"
+
         mc:Ignorable="d"
         Title="Verwaltung Schuljahr" Height="450" Width="1600"
         Background="SlateGray"
@@ -137,7 +140,7 @@
                                     Content="Neu" 
                                     Grid.Row="1" Grid.Column="6" VerticalAlignment="Center"
                                     Height="40"
-                                    Click="ButtonNewScoolyearMousUp"
+                                    Click="ButtonNewScoolyearClick"
                                     />
                             <Button x:Name="BtnSaveSchoolyear"
                                     Content="Speichern" 

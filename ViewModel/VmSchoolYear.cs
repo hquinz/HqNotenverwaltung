@@ -35,6 +35,7 @@ namespace HqNotenverwaltung.ViewModel
                 updateViewSchoolyear();
             }
         }
+
         public EnumSemestered SemesteredSelected
         {
             get { return schoolyearModel.ActiveSchoolYear.Semestered; }
@@ -66,13 +67,15 @@ namespace HqNotenverwaltung.ViewModel
             get { return schoolyearModel.ActiveSchoolYear.DateEnd[2].Date.ToDateTime(new TimeOnly(0)); }
             set { if (registerSpecialDay(EnumDateTabels.End, 2, value)) { OnPropertyChanged("DateYearEnd"); }; }
         }
-        //HACK make Numartik input an parse to two-digit int and tak the initvalue Might hve to adapt the initMethod
-        private string yearStartNew = "NaN";
-        public String YearStartNew
+
+        private double? yearStartNew = 25.0;
+        public double? YearStartNew
         { get => yearStartNew;
             set { yearStartNew = value;
-                Debug.WriteLine("YearStartNew set to: " + yearStartNew);
+                //TODO: Delete Debug 
+                Debug.WriteLine($"YearStartNew set to: {yearStartNew}");
                 initializeSchoolyearNew(25);
+                OnPropertyChanged("YearStartNew");
             }
         }
 
@@ -180,6 +183,7 @@ namespace HqNotenverwaltung.ViewModel
             DateSemesterEndNew = new DateTime(2001 + year, 2, 14);
             DateVocationalSchoolEndNew = new DateTime(2001 + year, 5, 2);
             DateYearEndNew = new DateTime(2001 + year, 7, 3);
+            //HACK: Collect days off in the future
         }
 
 
