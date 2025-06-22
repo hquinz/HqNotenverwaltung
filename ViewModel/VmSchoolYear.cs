@@ -71,14 +71,14 @@ namespace HqNotenverwaltung.ViewModel
         private double? yearStartNew = 25.0;
         public double? YearStartNew
         { get => yearStartNew;
-            set { yearStartNew = value;
-                //TODO: Delete Debug 
-                Debug.WriteLine($"YearStartNew set to: {yearStartNew}");
-                initializeSchoolyearNew(25);
+            set
+            {
+                yearStartNew = value;
+                if (yearStartNew is null) return;
+                initializeSchoolyearNew((int)yearStartNew);
                 OnPropertyChanged("YearStartNew");
-            }
+          }
         }
-
         public EnumSemestered SemesteredSelectedNew { get; set; }
         private DateTime dateYearStartNew;
         public DateTime DateYearStartNew
