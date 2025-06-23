@@ -68,85 +68,6 @@ namespace HqNotenverwaltung.ViewModel
             set { if (registerSpecialDay(EnumDateTabels.End, 2, value)) { OnPropertyChanged("DateYearEnd"); }; }
         }
 
-        private double? yearStartNew = 25.0;
-        public double? YearStartNew
-        { get => yearStartNew;
-            set
-            {
-                yearStartNew = value;
-                if (yearStartNew is null) return;
-                initializeSchoolyearNew((int)yearStartNew);
-                OnPropertyChanged("YearStartNew");
-          }
-        }
-        public EnumSemestered SemesteredSelectedNew { get; set; }
-        private DateTime dateYearStartNew;
-        public DateTime DateYearStartNew
-        {
-            get => dateYearStartNew;
-            set { dateYearStartNew = ToolsDateTime.GetDateOfWeekday(value, DayOfWeek.Monday);
-                OnPropertyChanged("DateYearStartNew");
-            }
-        }
-        private DateTime dateAutumnBreakStartNew;
-        public DateTime DateAutumnBreakStartNew
-        {
-            get => dateAutumnBreakStartNew;
-            set { dateAutumnBreakStartNew = ToolsDateTime.GetDateOfWeekday(value, DayOfWeek.Monday);
-                OnPropertyChanged("DateAutumnBreakStartNew");
-            }
-        }
-        private DateTime dateAutumnBreakEndNew;
-        public DateTime DateAutumnBreakEndNew
-        {
-            get => dateAutumnBreakEndNew;
-            set
-            {
-                dateAutumnBreakEndNew = ToolsDateTime.GetDateOfWeekday(value, DayOfWeek.Friday);
-                OnPropertyChanged("DateAutumnBreakEndNew");
-            }
-        }
-        private DateTime dateTechnicalSchoolStartNew;
-        public DateTime DateTechnicalSchoolStartNew
-        {
-            get => dateTechnicalSchoolStartNew;
-            set
-            {
-                dateTechnicalSchoolStartNew = ToolsDateTime.GetDateOfWeekday(value, DayOfWeek.Monday);
-                OnPropertyChanged("DateTechnicalSchoolStartNew");
-            }
-        }
-        private DateTime dateSemesterEndNew;
-        public DateTime DateSemesterEndNew
-        {
-            get => dateSemesterEndNew;
-            set
-            {
-                dateSemesterEndNew = ToolsDateTime.GetDateOfWeekday(value, DayOfWeek.Friday);
-                OnPropertyChanged("DateSemesterEndNew");
-            }
-        }
-        private DateTime dateVocationalSchoolEndNew;
-        public DateTime DateVocationalSchoolEndNew
-        {
-            get => dateVocationalSchoolEndNew;
-            set
-            {
-                dateVocationalSchoolEndNew = ToolsDateTime.GetDateOfWeekday(value, DayOfWeek.Friday);
-                OnPropertyChanged("DateVocationalSchoolEndNew");
-            }
-        }
-        private DateTime dateYearEndNew;
-        public DateTime DateYearEndNew
-        {
-            get => dateYearEndNew;
-            set
-            {
-                dateYearEndNew = ToolsDateTime.GetDateOfWeekday(value, DayOfWeek.Friday);
-                OnPropertyChanged("DateYearEndNew");
-            }
-        }
-
         public void RefreshSchoolyears() { OnPropertyChanged("Years"); }
 
         /// <summary>
@@ -174,18 +95,6 @@ namespace HqNotenverwaltung.ViewModel
             }
             return _day != value;
         }
-        private void initializeSchoolyearNew(int year)
-        {
-            DateYearStartNew = new DateTime(2000+year, 9, 7);
-            DateAutumnBreakStartNew = new DateTime(2000 + year, 10, 26);
-            DateAutumnBreakEndNew = DateAutumnBreakStartNew.AddDays(5);
-            DateTechnicalSchoolStartNew = new DateTime(2000 + year, 11, 10);
-            DateSemesterEndNew = new DateTime(2001 + year, 2, 14);
-            DateVocationalSchoolEndNew = new DateTime(2001 + year, 5, 2);
-            DateYearEndNew = new DateTime(2001 + year, 7, 3);
-            //HACK: Collect days off in the future
-        }
-
 
         private void updateViewSchoolyear()
         {
